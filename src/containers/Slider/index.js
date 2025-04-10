@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
-
 import "./style.scss";
 
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
+  const [intervalId, setIntervalId] = useState(null);
 
-  const byDateDesc = data?.focus.sort((evtA, evtB) => (new Date(evtA.date) < new Date(evtB.date) ? -1 : 1));
+  const byDateDesc = [...(data?.focus || [])].sort((evtA, evtB) =>
+    new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
+  );
+
   const nextCard = () => {
-    setTimeout(
-      // () => setIndex(index < byDateDesc.length ? index + 1 : 0), TEST POUR RETOURNER A 0
-      () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
-      5000
-    );
+    setIndex((prevIndex) => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0));
   };
 
   useEffect(() => {
-    nextCard();
-  });
+    const id = setInterval(nextCard, 5000);
+    setIntervalId(id);
+    return () => clearInterval(id);
+  }, []);
+
+  const handleRadioChange = (radioIdx) => {
+    setIndex(radioIdx);
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+    const id = setInterval(nextCard, 5000);
+    setIntervalId(id);
+  };
 
   return (
     <div className="SlideCardList">
-      {byDateDesc?.map((event, idx) => (
-        // key mis dans une div a par
+      {byDateDesc.map((event, idx) => (
         <div key={event.id}>
           <div className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}>
             <img src={event.cover} alt="forum" />
@@ -36,15 +45,19 @@ const Slider = () => {
               </div>
             </div>
           </div>
+
           <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => {
-                console.log(idx);
-                console.log(radioIdx);
-                return (
-                  <input key={`${event.id}`} type="radio" name="radio-button" checked={idx === radioIdx} />
-                );
-              })}
+              {byDateDesc.map((item, radioIdx) => (
+                <input
+                  key={item.id} // Assurez-vous qu'ici aussi, chaque item a un id unique
+                  type="radio"
+                  name="radio-button"
+                  checked={index === radioIdx}
+                  onChange={() => handleRadioChange(radioIdx)}
+                  style={{ cursor: "pointer" }}
+                />
+              ))}
             </div>
           </div>
         </div>
