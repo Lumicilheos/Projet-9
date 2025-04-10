@@ -7,6 +7,7 @@ import "./style.scss";
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
+
   const byDateDesc = data?.focus.sort((evtA, evtB) => (new Date(evtA.date) < new Date(evtB.date) ? -1 : 1));
   const nextCard = () => {
     setTimeout(
@@ -15,6 +16,7 @@ const Slider = () => {
       5000
     );
   };
+
   useEffect(() => {
     nextCard();
   });
@@ -23,7 +25,7 @@ const Slider = () => {
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
         // key mis dans une div a part
-        <div key={event.title}>
+        <div key={event.id}>
           <div className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}>
             <img src={event.cover} alt="forum" />
             <div className="SlideCard__descriptionContainer">
@@ -36,9 +38,13 @@ const Slider = () => {
           </div>
           <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => (
-                <input key={`${event.id}`} type="radio" name="radio-button" checked={idx === radioIdx} />
-              ))}
+              {byDateDesc.map((_, radioIdx) => {
+                console.log(idx);
+                console.log(radioIdx);
+                return (
+                  <input key={`${event.id}`} type="radio" name="radio-button" checked={idx === radioIdx} />
+                );
+              })}
             </div>
           </div>
         </div>
