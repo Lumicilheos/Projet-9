@@ -24,7 +24,7 @@ const Slider = () => {
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        // key mis dans une div a part
+        // key mis dans une div a par
         <div key={event.id}>
           <div className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}>
             <img src={event.cover} alt="forum" />
