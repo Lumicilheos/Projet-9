@@ -12,11 +12,7 @@ const Modal = ({ opened, Content, children }) => {
         <div className="modal">
           <div className="content">
             {Content}
-            <button
-              type="button"
-              data-testid="close-modal"
-              onClick={() => setIsOpened(false)}
-            >
+            <button type="button" data-testid="close-modal" onClick={() => setIsOpened(false)}>
               <Icon name="close" />
             </button>
           </div>
@@ -28,12 +24,12 @@ const Modal = ({ opened, Content, children }) => {
 
 Modal.defaultProps = {
   opened: false,
-}
+};
 
 Modal.propTypes = {
   opened: PropTypes.bool,
   Content: PropTypes.node.isRequired,
   children: PropTypes.func.isRequired,
-}
+};
 
 export default Modal;

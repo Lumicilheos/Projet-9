@@ -17,10 +17,12 @@ const Slider = () => {
   };
 
   useEffect(() => {
-    const id = setInterval(nextCard, 5000);
-    setIntervalId(id);
+    if (byDateDesc.length === 0) return () => {};
+    const id = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex < byDateDesc.length - 1 ? prevIndex + 1 : 0));
+    }, 5000);
     return () => clearInterval(id);
-  }, []);
+  }, [byDateDesc.length]);
 
   const handleRadioChange = (radioIdx) => {
     setIndex(radioIdx);
@@ -34,7 +36,7 @@ const Slider = () => {
   return (
     <div className="SlideCardList">
       {byDateDesc.map((event, idx) => (
-        <div key={event.id}>
+        <div key={`${event.id}test`}>
           <div className={`SlideCard SlideCard--${index === idx ? "display" : "hide"}`}>
             <img src={event.cover} alt="forum" />
             <div className="SlideCard__descriptionContainer">

@@ -8,16 +8,11 @@ import "./style.scss";
 const Select = ({ selection, onChange, name, titleEmpty, label, type = "normal" }) => {
   const [value, setValue] = useState();
   const [collapsed, setCollapsed] = useState(true);
-  // TEST A VERIF
-  // const changeValue = (newValue) => {
-  //   onChange(); // <-- ne transmet rien
-  //   setValue(newValue);
-  //   setCollapsed(newValue); // <-- incorrect : setCollapsed attend un booléen
-  // };
+
   const changeValue = (newValue) => {
     setValue(newValue);
-    setCollapsed(true); // on ferme le menu déroulant
-    onChange(newValue); // on transmet la sélection
+    setCollapsed(true);
+    onChange(newValue);
   };
   return (
     <div className={`SelectContainer ${type}`} data-testid="select-testid">
